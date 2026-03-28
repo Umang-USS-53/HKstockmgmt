@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select a Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #007bff; /* Primary blue color */
+            color: white;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 300px; /* Make buttons wider */
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Add focus ring */
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome Sandeep Patel! Select option to Explore:</h2>
+    <button onclick="window.location.href='index.html?loggedIn=true'">INVOICE CREATION</button>
+    <button onclick="window.location.href='invoice-manager.html?loggedIn=true'">MANAGE INVOICES</button>
+    <button onclick="window.location.href='dc-index.html?loggedIn=true'">DELIVERY CHALLAN CREATION</button>
+    <button onclick="window.location.href='challan-manager.html?loggedIn=true'">MANAGE DELIVERY CHALLANS</button>
+
+    
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        function logout() {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

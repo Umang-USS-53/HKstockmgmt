@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delivery Challan for Goods sent on Approval</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <h1>Delivery Challan for Goods sent on Approval</h1>
+
+    <div id="invoiceForm">
+        <div class="form-section">
+            <h2>Challan Details</h2>
+            <label for="challanDate">Challan Date (DD/MM/YYYY):</label>
+            <input type="date" id="challanDate" name="challanDate" required>
+            <label for="challanNumber">Challan Number:</label>
+            <span>HK-DC-</span>
+            <input type="text" id="challanNumber" name="challanNumber" style="width: 50px;" required>
+            <span>/25-26</span>
+        </div>
+
+        <button id="challanManagerButton">Manage Challans</button>
+
+<script>
+document.getElementById('challanManagerButton').addEventListener('click', function() {
+    window.open('challan-manager.html', '_blank'); // Opens in a new tab
+});
+</script>
+
+        <div class="form-section">
+            <h2>Seller Details</h2>
+            <p><strong>Seller Name:</strong> <span id="sellerName">HK & SONS</span></p>
+            <p><strong>Seller Address:</strong> <span id="sellerAddress">B-803 ANMOL EXCEL ESTATE OFF:- S V ROAD, GOREGAON WEST, MUMBAI:-400062</span></p>
+            <p><strong>Seller State:</strong> <span id="sellerState">Maharashtra</span></p>
+            <p><strong>Seller Email:</strong> <span id="sellerEmail">hkandsons18@gmail.com</span></p>
+            <p><strong>Seller GST:</strong> <span id="sellerGST">27AALFH1384H1Z7</span></p>
+            <p><strong>Seller PAN:</strong> <span id="sellerPAN">AALFH1384H</span></p>
+        </div>
+
+        <div class="form-section">
+            <h2>Detail of Receiver / Transporter</h2>
+            <label for="buyerName">Buyer Name - Buyer GST:</label>
+            <select id="buyerName" name="buyerName" required>
+                <option value="">Select Buyer</option>
+            </select>
+            <div id="buyerDetails">
+                <p><strong>Buyer Address:</strong> <span id="buyerAddress"></span></p>
+                <p><strong>Buyer City:</strong> <span id="buyerCity"></span></p>
+                <p><strong>Buyer State:</strong> <span id="buyerState"></span></p>
+                <p><strong>Buyer PIN:</strong> <span id="buyerPIN"></span></p>
+                <p><strong>Buyer GST:</strong> <span id="buyerGST"></span></p>
+                <p><strong>Buyer PAN:</strong> <span id="buyerPAN"></span></p>
+            </div>
+            <button type="button" id="addBuyerButton">Add New Buyer</button>
+            <div id="newBuyerForm" style="display: none;">
+                <label for="newBuyerName">Buyer Name:</label>
+                <input type="text" id="newBuyerName" name="newBuyerName">
+                <label for="newBuyerAddress">Buyer Address:</label>
+                <input type="text" id="newBuyerAddress" name="newBuyerAddress">
+                <label for="newBuyerCity">Buyer City:</label>
+                <input type="text" id="newBuyerCity" name="newBuyerCity">
+                <label for="newBuyerState">Buyer State:</label>
+                <input type="text" id="newBuyerState" name="newBuyerState">
+                <label for="newBuyerPIN">Buyer PIN:</label>
+                <input type="text" id="newBuyerPIN" name="newBuyerPIN">
+                <label for="newBuyerGST">Buyer GST:</label>
+                <input type="text" id="newBuyerGST" name="newBuyerGST">
+                <label for="newBuyerPAN">Buyer PAN:</label>
+                <input type="text" id="newBuyerPAN" name="newBuyerPAN">
+                <button type="button" id="saveBuyerButton">Save Buyer</button>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Place of Supply</h2>
+            <label for="placeOfDestination">Place of Destination:</label>
+            <input type="text" id="placeOfDestination" name="placeOfDestination"><br>
+            <small>Example - State, City</small><br><br>
+
+            <label for="modeOfDelivery">Mode of Delivery:</label>
+            <input type="text" id="modeOfDelivery" name="modeOfDelivery"><br>
+            <small>Example - Hand Carry, By Courier, By Air, Others</small><br><br>
+
+            <label for="detailsOfTransporter">Details of Transporter:</label>
+            <input type="text" id="detailsOfTransporter" name="detailsOfTransporter"><br>
+            <small>Example BVC Logistics, Air India, Leave it blank if Hand Carry</small><br><br>
+
+            <label for="purposeOfMovement">Purpose of Movement:</label>
+            <select id="purposeOfMovement" name="purposeOfMovement">
+                <option value="Goods Sent on Approval">Goods Sent on Approval</option>
+                <option value="Business Promotion and Marketing">Business Promotion and Marketing</option>
+                <option value="Goods Returned back">Goods Returned back</option>
+                <option value="Goods sent for Job Work">Goods sent for Job Work</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+
+        <div class="form-section">
+            <h2>Item Details</h2>
+            <table id="itemTable">
+                <thead>
+                    <tr>
+                        <th>Lot No.</th>
+                        <th>Description</th>
+                        <th>HSN Code</th>
+                        <th>Unit</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Amount (QxR)</th>
+                        <th>CGST Rate</th>
+                        <th>SGST Rate</th>
+                        <th>IGST Rate</th>
+                    </tr>
+                </thead>
+                <tbody id="itemRows">
+                </tbody>
+            </table>
+            <button type="button" id="addItemButton">Add Line Item</button>
+        </div>
+
+        <div class="form-section">
+            <h2>Totals</h2>
+            <p><strong>Total Quantity:</strong> <span id="totalQuantity"></span></p>
+            <p><strong>Taxable Value:</strong> <span id="taxableValue"></span></p>
+            <p><strong>CGST Value:</strong> <span id="cgstValue"></span></p>
+            <p><strong>SGST Value:</strong> <span id="sgstValue"></span></p>
+            <p><strong>IGST Value:</strong> <span id="igstValue"></span></p>
+            <p><strong>Invoice Value:</strong> <span id="invoiceValue"></span></p>
+            <p><strong>Amount in Words:</strong> <span id="amountInWords"></span></p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="dc-script.js"></script>
+
+    <button id="previewChallanButton">Preview Challan</button>
+
+    <div id="invoicePreview" style="display: none;">
+        <h2>Delivery Challan Preview</h2>
+
+        <p><strong>Challan Number:</strong> <span id="previewInvoiceNumber"></span></p>
+        <p><strong>Challan Date:</strong> <span id="previewInvoiceDate"></span></p>
+
+        <div id="sellerPreview">
+            <h3>Seller Details</h3>
+            <p>Name: <span id="previewSellerName"></span></p>
+            <p>Address: <span id="previewSellerAddress"></span></p>
+            <p>State: <span id="previewSellerState"></span></p>
+            <p>Email: <span id="previewSellerEmail"></span></p>
+            <p>GST: <span id="previewSellerGST"></span></p>
+            <p>PAN: <span id="previewSellerPAN"></span></p>
+        </div>
+
+        <div id="buyerPreview">
+            <h3>Detail of Receiver / Transporter</h3>
+            <p>Name: <span id="previewBuyerName"></span></p>
+            <p>Address: <span id="previewBuyerAddress"></span></p>
+            <p>City: <span id="previewBuyerCity"></span></p>
+            <p>State: <span id="previewBuyerState"></span></p>
+            <p>PIN: <span id="previewBuyerPIN"></span></p>
+            <p>GSTIN: <span id="previewBuyerGST"></span></p>
+            <p>PAN: <span id="previewBuyerPAN"></span></p>
+            <p><strong>Place of Destination:</strong> <span id="previewplaceOfDestination"></span></p>
+            <p><strong>Mode of Delivery:</strong> <span id="previewmodeOfDelivery"></span></p>
+            <p><strong>Details of Transporter:</strong> <span id="previewdetailsOfTransporter"></span></p>
+            <p><strong>Purpose of Movement:</strong> <span id="previewpurposeOfMovement"></span></p>
+        </div>
+
+        <table id="itemsPreview">
+            <thead>
+                <tr>
+                    <th>Lot No.</th>
+                    <th>Description</th>
+                    <th>HSN/SAC</th>
+                    <th>Unit</th>
+                    <th>Quantity</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>CGST Rate</th>
+                    <th>SGST Rate</th>
+                    <th>IGST Rate</th>
+                </tr>
+            </thead>
+            <tbody id="previewItemRows">
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="1"></td>
+                    <td>Total Quantity</td>
+                    <td colspan="4"></td>
+                    <td colspan="1"><span id="previewTotalQuantity"></span></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td colspan="1"></td>
+                    <td>Taxable Value</td>
+                    <td colspan="4"></td>
+                    <td colspan="1"><span id="previewTaxableValue"></span></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td colspan="1"></td>
+                    <td>CGST</td>
+                    <td colspan="4"></td>
+                    <td colspan="1"><span id="previewCgstValue"></span></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td colspan="1"></td>
+                    <td>SGST</td>
+                    <td colspan="4"></td>
+                    <td colspan="1"><span id="previewSgstValue"></span></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td colspan="1"></td>
+                    <td>IGST</td>
+                    <td colspan="4"></td>
+                    <td colspan="1"><span id="previewIgstValue"></span></td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td colspan="1"></td>
+                    <td>Invoice Value</td>
+                    <td colspan="4"></td>
+                    <td colspan="1"><span id="previewInvoiceValue"></span></td>
+                    <td colspan="3"></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div id="amountInWordsPreview">
+            <p><strong>Amount in Words:</strong> <span id="previewAmountInWords"></span></p>
+        </div>
+
+        <div id="challanTermsConditions">
+            <h3>Challan Terms and Conditions</h3>
+            <p>1 The goods delivered to you to the person signing undermeath is authorized by to sell goods for and on behalf of the Firm.</p>
+            <p>2 The goods have been entrusted for the purpose of approval</p>
+            <p>3 No E-way Bill is required to be generated as the Goods covered under this Invoice are exempted as per Serial No 4/5, refer to the annexure </p>
+            <p>  to Rule 138(14) of the CGST Rules, 2017.</p>
+            <p>4 Goods are for approval basis and Tax invoice would be prepared in accordance with the GST act and rules.</p>
+            <p>5 All disputes are subject to Mumbai Jurisdiction only.</p>
+            <p>6 E&OE</p>
+        </div>
+
+        <button type="button" id="saveChallanButton" style="display: none;">Save Challan</button>
+    </div>
+
+</body>
+</html>
