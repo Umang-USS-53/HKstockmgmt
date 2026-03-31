@@ -15,6 +15,54 @@
             max-width: 1000px;
             margin: auto;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background: #fff;
+            margin: 3% auto;
+            padding: 20px;
+            width: 80%;
+            border-radius: 8px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            cursor: pointer;
+            font-size: 22px;
+        }
+
+        #filePreviewContainer {
+            margin-top: 20px;
+        }
+
+        #downloadBtn {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #downloadBtn:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 
@@ -46,16 +94,19 @@
 <script src="purchase-manager.js"></script>
 
 <!-- MODAL -->
-<div id="purchaseModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4);">
+<div id="purchaseModal" class="modal">
     
-    <div style="background:#fff; margin:5% auto; padding:20px; width:80%; border-radius:8px; position:relative; max-height:80vh; overflow-y:auto;">
+    <div class="modal-content">
         
-        <span onclick="closeModal()" 
-              style="position:absolute; right:15px; top:10px; cursor:pointer; font-size:20px;">
-              &times;
-        </span>
+        <span class="close" onclick="closeModal()">&times;</span>
 
         <div id="purchaseDetails"></div>
+
+        <!-- FILE PREVIEW -->
+        <div id="filePreviewContainer"></div>
+
+        <!-- DOWNLOAD BUTTON -->
+        <button id="downloadBtn">Download File</button>
 
     </div>
 

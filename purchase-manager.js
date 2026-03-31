@@ -89,11 +89,7 @@ window.viewDetails = function(id) {
             `;
         });
 
-        let fileButton = "";
-        if (data.invoiceFileURL) {
-            fileButton = `<button onclick="window.open('${data.invoiceFileURL}', '_blank')">View Invoice File</button>`;
-        }
-
+        // MAIN DETAILS
         document.getElementById('purchaseDetails').innerHTML = `
             <h3>Purchase Details</h3>
 
@@ -112,10 +108,50 @@ window.viewDetails = function(id) {
             <p><b>SGST:</b> ${data.sgstValue}</p>
             <p><b>IGST:</b> ${data.igstValue}</p>
             <p><b>Invoice Value:</b> ${data.invoiceValue}</p>
-
-            ${fileButton}
         `;
 
+        // FILE PREVIEW + DOWNLOAD
+        const fileURL = data.invoiceFileURL;
+        const container = document.getElementById('filePreviewContainer');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        container.innerHTML = "";
+
+        if (!fileURL) {
+
+            container.innerHTML = "<p>No file uploaded</p>";
+            downloadBtn.style.display = "none";
+
+        } else {
+
+            // PDF
+            if (fileURL.toLowerCase().includes(".pdf")) {
+
+                container.innerHTML = `
+                    <iframe src="${fileURL}" width="100%" height="500px"></iframe>
+                `;
+
+            } 
+            // IMAGE
+            else {
+
+                container.innerHTML = `
+                    <img src="${fileURL}" style="max-width:100%; height:auto; border:1px solid #ccc;">
+                `;
+            }
+
+            // DOWNLOAD BUTTON
+            downloadBtn.style.display = "inline-block";
+
+            downloadBtn.onclick = function () {
+                const link = document.createElement('a');
+                link.href = fileURL;
+                link.download = '';
+                link.click();
+            };
+        }
+
+        // OPEN MODAL
         document.getElementById('purchaseModal').style.display = 'block';
 
     });
@@ -123,7 +159,7 @@ window.viewDetails = function(id) {
 }
 
 
-// ✅ CLOSE MODAL
+// CLOSE MODAL
 window.closeModal = function() {
     document.getElementById('purchaseModal').style.display = 'none';
 }
