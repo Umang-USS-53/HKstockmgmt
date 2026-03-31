@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
     // Challan Details
     const challanNumberInput = document.getElementById('challanNumber').value;
-    document.getElementById('previewInvoiceNumber').textContent = `HK-DC-${challanNumberInput}/25-26`; // Using previewInvoiceNumber ID as it exists in your preview
+    document.getElementById('previewInvoiceNumber').textContent = `HK-DC-${challanNumberInput}/26-27`; // Using previewInvoiceNumber ID as it exists in your preview
 
     // Format Challan Date
     const challanDate = new Date(document.getElementById('challanDate').value);
@@ -510,7 +510,7 @@ function generateChallanPDF() {
 
     // Challan Number and Date
     const challanNumberInput = document.getElementById('challanNumber').value;
-    addStyledText(`Challan No.: HK-DC-${challanNumberInput}/25-26`, margin, currentY, {
+    addStyledText(`Challan No.: HK-DC-${challanNumberInput}/26-27`, margin, currentY, {
         align: 'left',
         size: 11,
         fontStyle: 'bold'
@@ -664,14 +664,14 @@ function generateChallanPDF() {
     addStyledText("PARTNER / AUTHORISED SIGNATORY", rightLineX, currentY, { size: 6, align: 'left' });
 
     // Retrieve Challan Number
-    const challanNumber = `HK-DC-${challanNumberInput}/25-26`;
+    const challanNumber = `HK-DC-${challanNumberInput}/26-27`;
     const filename = `Challan_${challanNumber}.pdf`;
     doc.save(filename);
 }
 
 function saveChallanData() {
     return new Promise((resolve, reject) => {
-        let challanNumber = `HK-DC-${document.getElementById('challanNumber').value}/25-26`;
+        let challanNumber = `HK-DC-${document.getElementById('challanNumber').value}/26-27`;
         challanNumber = challanNumber.replace("/", "-"); // Replace "/" with "-"
         const challanDate = document.getElementById('challanDate').value;
         const buyerName = document.getElementById('buyerName').options[document.getElementById('buyerName').selectedIndex].text;
@@ -710,13 +710,13 @@ function saveChallanData() {
         });
 
         // Check if challan number already exists
-        db.collection('challans').doc(challanNumber).get().then((doc) => {
+        db.collection('challans_2627').doc(challanNumber).get().then((doc) => {
             if (doc.exists) {
                 alert('Challan number already exists. Please use a different number.');
                 reject('Challan number exists');
             } else {
                 // Challan number is unique, save to Firestore
-                db.collection('challans').doc(challanNumber).set({
+                db.collection('challans_2627').doc(challanNumber).set({
                     challanNumber: challanNumber,
                     challanDate: challanDate,
                     buyerName: buyerName,

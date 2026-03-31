@@ -20,7 +20,7 @@ const challansTable = document.getElementById('challansTable').getElementsByTagN
 
 function displayChallans() {
     challansTable.innerHTML = ''; // Clear existing rows
-    db.collection('challans').orderBy('createdAt', 'desc').get().then((querySnapshot) => {
+    db.collection('challans_2627').orderBy('createdAt', 'desc').get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             const challan = doc.data();
 
@@ -48,7 +48,7 @@ function deleteChallan(challanId, challanNumber) {
     if (confirmation) {
         const password = prompt('Enter password to delete challan:');
         if (password === 'hkdelete') {
-            db.collection('challans').doc(challanId).delete().then(() => {
+            db.collection('challans_2627').doc(challanId).delete().then(() => {
                 alert('Challan deleted successfully.');
                 displayChallans(); // Refresh the list
             }).catch((error) => {
@@ -62,7 +62,7 @@ function deleteChallan(challanId, challanNumber) {
 }
 
 function viewChallanDetails(challanId) {
-    db.collection('challans').doc(challanId).get().then((doc) => {
+    db.collection('challans_2627').doc(challanId).get().then((doc) => {
         if (doc.exists) {
             const challan = doc.data();
             displayDetailedChallan(challan);
@@ -148,7 +148,7 @@ function displayDetailedChallan(challan) {
 }
 
 function exportToCSV() {
-    db.collection('challans').get().then((querySnapshot) => {
+    db.collection('challans_2627').get().then((querySnapshot) => {
         let csvContent = "Challan Number,Challan Date,Consignee Name,Consignee GST,Place of Destination,Mode of Delivery,Transporter Details,Purpose of Movement,Total Quantity,Taxable Value,CGST Value,SGST Value,IGST Value,Invoice Value,Amount in Words,Lot No,Description,HSN Code,Unit,Quantity,Rate,Amount,CGST Rate (%),SGST Rate (%),IGST Rate (%)\n"; // Corrected Header Row
 
         querySnapshot.forEach((doc) => {
