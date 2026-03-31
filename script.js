@@ -619,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Invoice Details
 
     const invoiceNumberInput = document.getElementById('invoiceNumber').value;
-    document.getElementById('previewInvoiceNumber').textContent = `HK-${invoiceNumberInput}/25-26`;
+    document.getElementById('previewInvoiceNumber').textContent = `HK-${invoiceNumberInput}/26-27`;
 
 
     // Format Invoice Date
@@ -846,7 +846,7 @@ function generatePDF() {
 
     // Invoice Number (Left) and Date (Right)
     const invoiceNumberInput = document.getElementById('invoiceNumber').value;
-    addStyledText(`Invoice No.: HK-${invoiceNumberInput}/25-26`, margin, currentY, {
+    addStyledText(`Invoice No.: HK-${invoiceNumberInput}/26-27`, margin, currentY, {
         align: 'left',
         size: 11,
         fontStyle: 'bold'
@@ -1042,7 +1042,7 @@ function generatePDF() {
     addStyledText("PARTNER / AUTHORISED SIGNATORY", rightLineX, currentY, { size: 6, align: 'left' });
 
     // Retrieve Invoice Number
-    const invoiceNumber = `HK-${invoiceNumberInput}/25-26`;
+    const invoiceNumber = `HK-${invoiceNumberInput}/26-27`;
 
     // Create the Filename
     const filename = `Invoice_${invoiceNumber}.pdf`;
@@ -1054,7 +1054,7 @@ function generatePDF() {
 
 function saveInvoiceToFirestore() {
     return new Promise((resolve, reject) => {
-        let invoiceNumber = `HK-${document.getElementById('invoiceNumber').value}/25-26`;
+        let invoiceNumber = `HK-${document.getElementById('invoiceNumber').value}/26-27`;
         invoiceNumber = invoiceNumber.replace("/", "-"); // Replace "/" with "-"
         const invoiceDate = document.getElementById('invoiceDate').value;
         const buyerName = document.getElementById('buyerName').options[document.getElementById('buyerName').selectedIndex].text;
