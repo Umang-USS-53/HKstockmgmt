@@ -18,7 +18,7 @@ const db = firebase.firestore();
 const invoicesTable = document.getElementById('invoicesTable').getElementsByTagName('tbody')[0];
 
 function displayInvoices() {
-    db.collection('invoices').get().then((querySnapshot) => {
+    db.collection('invoices_2627').get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             const invoice = doc.data();
 
@@ -40,7 +40,7 @@ function displayInvoices() {
 }
 
 function viewInvoiceDetails(invoiceId) {
-    db.collection('invoices').doc(invoiceId).get().then((doc) => {
+    db.collection('invoices_2627').doc(invoiceId).get().then((doc) => {
         if (doc.exists) {
             const invoice = doc.data();
             displayDetailedInvoice(invoice);
@@ -53,7 +53,7 @@ function viewInvoiceDetails(invoiceId) {
 }
 
 function displayInvoices() {
-    db.collection('invoices').get().then((querySnapshot) => {
+    db.collection('invoices_2627').get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             const invoice = doc.data();
 
@@ -78,7 +78,7 @@ function displayInvoices() {
 }
 
 function deleteInvoice(invoiceId) {
-    db.collection('invoices').doc(invoiceId).get().then((doc) => {
+    db.collection('invoices_2627').doc(invoiceId).get().then((doc) => {
         if (doc.exists) {
             const invoice = doc.data();
             const invoiceNumber = invoice.invoiceNumber;
@@ -87,7 +87,7 @@ function deleteInvoice(invoiceId) {
             if (confirmation) {
                 const password = prompt('Enter password to delete invoice:');
                 if (password === 'hkdelete') {
-                    db.collection('invoices').doc(invoiceId).delete().then(() => {
+                    db.collection('invoices_2627').doc(invoiceId).delete().then(() => {
                         alert('Invoice deleted successfully.');
                         displayInvoices();
                     }).catch((error) => {
@@ -107,7 +107,7 @@ function deleteInvoice(invoiceId) {
 }
 
 function viewInvoiceDetails(invoiceId) {
-    db.collection('invoices').doc(invoiceId).get().then((doc) => {
+    db.collection('invoices_2627').doc(invoiceId).get().then((doc) => {
         if (doc.exists) {
             const invoice = doc.data();
             displayDetailedInvoice(invoice);

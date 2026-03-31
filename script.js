@@ -1091,13 +1091,13 @@ function saveInvoiceToFirestore() {
         });
 
         // Check if invoice number already exists
-        db.collection('invoices').doc(invoiceNumber).get().then((doc) => {
+        db.collection('invoices_2627').doc(invoiceNumber).get().then((doc) => {
             if (doc.exists) {
                 alert('Invoice number already exists. Please use a different number.');
                 reject('Invoice number exists');
             } else {
                 // Invoice number is unique, save to Firestore
-                db.collection('invoices').doc(invoiceNumber).set({
+                db.collection('invoices_2627').doc(invoiceNumber).set({
                     invoiceNumber: invoiceNumber,
                     invoiceDate: invoiceDate,
                     buyerName: buyerName,

@@ -2,7 +2,7 @@
 
 function exportToCSV() {
     console.log("exportToCSV() called");
-    db.collection('invoices').get().then((querySnapshot) => {
+    db.collection('invoices_2627').get().then((querySnapshot) => {
         const csvData = []; // Declare csvData here
         const header = [
             'Invoice Number', 'Invoice Date', 'Buyer Name', 'Buyer GST', 'Terms of Payment',
