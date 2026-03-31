@@ -45,5 +45,21 @@
 
 <script src="purchase-manager.js"></script>
 
+<!-- MODAL -->
+<div id="purchaseModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4);">
+    
+    <div style="background:#fff; margin:10% auto; padding:20px; width:80%; border-radius:8px; position:relative;">
+        
+        <span onclick="closeModal()" 
+              style="position:absolute; right:15px; top:10px; cursor:pointer; font-size:20px;">
+              &times;
+        </span>
+
+        <div id="purchaseDetails"></div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
