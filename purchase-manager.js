@@ -57,6 +57,7 @@ function loadPurchases() {
                     <td>${data.type}</td>
                     <td>${data.invoiceValue}</td>
                     <td>
+                        <button onclick="viewDetails('${doc.id}')">View</button>
                         <button onclick="deletePurchase('${doc.id}')">Delete</button>
                     </td>
                 `;
@@ -69,12 +70,71 @@ function loadPurchases() {
 }
 
 
-// ✅ DELETE (WITH PASSWORD)
+// ✅ VIEW DETAILS
+function viewDetails(id) {
+
+    db.collection('purchase_entries_2627').doc(id).get().then(doc => {
+
+        const data = doc.data();
+
+        let itemsHTML = "";
+
+        data.items.forEach(item => {
+            itemsHTML += `
+                <li>
+                    Qty: ${item.quantity}, 
+                    Rate: ${item.rate}, 
+                    Amount: ${item.amount}
+                </li>
+            `;
+        });
+
+        let fileButton = "";
+        if (data.invoiceFileURL) {
+            fileButton = `<button onclick="window.open('${data.invoiceFileURL}', '_blank')">View Invoice File</button>`;
+        }
+
+        document.getElementById('purchaseDetails').innerHTML = `
+            <h3>Purchase Details</h3>
+
+            <p><b>Invoice Number:</b> ${data.invoiceNumber}</p>
+            <p><b>Invoice Date:</b> ${data.invoiceDate}</p>
+            <p><b>Vendor Name:</b> ${data.vendorName}</p>
+            <p><b>Vendor GST:</b> ${data.vendorGST}</p>
+            <p><b>Type:</b> ${data.type}</p>
+
+            <h4>Items:</h4>
+            <ul>${itemsHTML}</ul>
+
+            <p><b>Total Quantity:</b> ${data.totalQuantity}</p>
+            <p><b>Taxable Value:</b> ${data.taxableValue}</p>
+            <p><b>CGST:</b> ${data.cgstValue}</p>
+            <p><b>SGST:</b> ${data.sgstValue}</p>
+            <p><b>IGST:</b> ${data.igstValue}</p>
+            <p><b>Invoice Value:</b> ${data.invoiceValue}</p>
+
+            ${fileButton}
+        `;
+
+        document.getElementById('purchaseModal').style.display = 'block';
+
+    });
+
+}
+
+
+// ✅ CLOSE MODAL
+function closeModal() {
+    document.getElementById('purchaseModal').style.display = 'none';
+}
+
+
+// ✅ DELETE
 function deletePurchase(id) {
 
     const password = prompt("Enter password to delete:");
 
-    if (password !== "hkdelete") {
+    if (password !== "1234") {
         alert("Incorrect password");
         return;
     }
