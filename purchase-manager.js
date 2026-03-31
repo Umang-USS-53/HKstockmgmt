@@ -71,7 +71,7 @@ function loadPurchases() {
 
 
 // ✅ VIEW DETAILS
-function viewDetails(id) {
+window.viewDetails = function(id) {
 
     db.collection('purchase_entries_2627').doc(id).get().then(doc => {
 
@@ -124,13 +124,13 @@ function viewDetails(id) {
 
 
 // ✅ CLOSE MODAL
-function closeModal() {
+window.closeModal = function() {
     document.getElementById('purchaseModal').style.display = 'none';
 }
 
 
 // ✅ DELETE
-function deletePurchase(id) {
+window.deletePurchase = function(id) {
 
     const password = prompt("Enter password to delete:");
 
