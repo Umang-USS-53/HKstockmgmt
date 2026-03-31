@@ -41,7 +41,9 @@ function compressImage(file) {
             else if (sizeMB > 1) quality = 0.85;
 
             canvas.toBlob((blob) => {
-                resolve(blob);
+                const fileName = file.name.replace(/\.[^/.]+$/, "") + ".jpg";
+                const newFile = new File([blob], fileName, { type: 'image/jpeg' });
+                resolve(newFile);
             }, 'image/jpeg', quality);
         };
 
@@ -53,7 +55,7 @@ function compressImage(file) {
 // ================= CLOUDINARY UPLOAD =================
 async function uploadToCloudinary(file) {
 
-    const url = "https://api.cloudinary.com/v1_1/dl6nzbj7b/raw/upload";
+    const url = "https://api.cloudinary.com/v1_1/dl6nzbj7b/image/upload";
 
     const formData = new FormData();
     formData.append("file", file);
@@ -223,21 +225,16 @@ async function savePurchase() {
         return;
     }
 
+    // ✅ ONLY IMAGE FILES ALLOWED
+    if (!file.type.startsWith('image/')) {
+        alert("Only image files (JPG, JPEG, PNG) allowed");
+        return;
+    }
+
     let uploadFile = file;
 
     // IMAGE COMPRESSION
-    if (file.type.startsWith('image/')) {
-        uploadFile = await compressImage(file);
-    }
-
-    // PDF LIMIT
-    if (file.type === "application/pdf") {
-        const sizeMB = file.size / (1024 * 1024);
-        if (sizeMB > 10) {
-            alert("PDF must be less than 10MB");
-            return;
-        }
-    }
+    uploadFile = await compressImage(file);
 
     let fileURL = "";
 
