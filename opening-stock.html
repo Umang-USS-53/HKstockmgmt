@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Opening Stock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Opening Stock Entry</h2>
+
+    <h3>Regular Stock</h3>
+
+    <label>Quantity:</label>
+    <input type="number" id="regularQty" step="0.01">
+
+    <label>Value:</label>
+    <input type="number" id="regularValue" step="0.01">
+
+    <h3>Lot Stock</h3>
+
+    <table id="lotTable">
+        <thead>
+            <tr>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button onclick="addLotRow()">+ Add Lot</button>
+
+    <br><br>
+
+    <button onclick="saveOpeningStock()">Save</button>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<script src="opening-stock.js"></script>
+
+</body>
+</html>
