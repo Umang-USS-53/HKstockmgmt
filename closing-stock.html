@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Closing Stock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Closing Stock Valuation</h2>
+
+    <button onclick="calculateStock()">Calculate Closing Stock</button>
+
+    <h3>Regular Stock</h3>
+    <p><b>Quantity:</b> <span id="regularQty"></span></p>
+    <p><b>Value:</b> <span id="regularValue"></span></p>
+    <p><b>Average Rate:</b> <span id="regularAvg"></span></p>
+
+    <h3>Lot Stock (FIFO)</h3>
+
+    <table id="lotTable">
+        <thead>
+            <tr>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <p><b>Total Lot Quantity:</b> <span id="lotTotalQty"></span></p>
+    <p><b>Total Lot Value:</b> <span id="lotTotalValue"></span></p>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<script src="closing-stock.js"></script>
+
+</body>
+</html>
