@@ -1074,6 +1074,11 @@ function saveInvoiceToFirestore() {
         const amountInWords = document.getElementById('amountInWords').textContent;
         const saleType = document.getElementById('saleType').value;
 
+        if (!saleType) {
+            alert("Please select Sale Type");
+            return;
+        }
+
         const items = [];
         const itemRowsData = document.querySelectorAll('#itemRows tr');
         itemRowsData.forEach(row => {
