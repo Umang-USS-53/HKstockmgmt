@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Purchase Entry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .section {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .row input, .row select {
+            flex: 1;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        .total-box {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Purchase Entry</h2>
+
+    <!-- Vendor Details -->
+    <div class="section">
+        <h3>Vendor Details</h3>
+
+        <div class="row">
+            <input type="text" id="vendorName" placeholder="Vendor Name *">
+            <input type="text" id="vendorGST" placeholder="Vendor GST *">
+        </div>
+
+        <div class="row">
+            <input type="date" id="invoiceDate">
+            <input type="text" id="invoiceNumber" placeholder="Invoice Number *">
+        </div>
+
+        <div class="row">
+            <select id="purchaseType">
+                <option value="">Select Type *</option>
+                <option value="regular">Regular Purchase</option>
+                <option value="lot">Lot Purchase</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Items -->
+    <div class="section">
+        <h3>Items</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Qty (CTS)</th>
+                    <th>Rate</th>
+                    <th>Value</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+        </table>
+
+        <button onclick="addItem()">+ Add Item</button>
+    </div>
+
+    <!-- Tax -->
+    <div class="section">
+        <h3>Tax</h3>
+
+        <div class="row">
+            <input type="number" id="cgst" placeholder="CGST">
+            <input type="number" id="sgst" placeholder="SGST">
+            <input type="number" id="igst" placeholder="IGST">
+        </div>
+    </div>
+
+    <!-- Total -->
+    <div class="section total-box">
+        Total Invoice Value: ₹ <span id="totalValue">0.00</span>
+    </div>
+
+    <!-- Upload -->
+    <div class="section">
+        <h3>Invoice Upload *</h3>
+        <input type="file" id="invoiceFile">
+    </div>
+
+    <!-- Save -->
+    <div class="section">
+        <button onclick="savePurchase()">Save Purchase</button>
+    </div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<!-- Your logic -->
+<script src="purchase.js"></script>
+
+</body>
+</html>
