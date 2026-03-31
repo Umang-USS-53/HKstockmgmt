@@ -1052,14 +1052,28 @@ function generatePDF() {
     }
 
 
+// ================= SAVE TO FIRESTORE =================
 function saveInvoiceToFirestore() {
     return new Promise((resolve, reject) => {
+
         let invoiceNumber = `HK-${document.getElementById('invoiceNumber').value}/26-27`;
-        invoiceNumber = invoiceNumber.replace("/", "-"); // Replace "/" with "-"
+        invoiceNumber = invoiceNumber.replace("/", "-");
+
         const invoiceDate = document.getElementById('invoiceDate').value;
         const buyerName = document.getElementById('buyerName').options[document.getElementById('buyerName').selectedIndex].text;
         const buyerGST = document.getElementById('buyerGST').textContent;
         const termsOfPayment = document.getElementById('termsOfPayment').value;
+
+        // ✅ NEW FIELD
+        const saleType = document.getElementById('saleType').value;
+
+        // ✅ VALIDATION
+        if (!saleType) {
+            alert("Please select Sale Type");
+            reject("Sale type missing");
+            return;
+        }
+
         const totalQuantity = document.getElementById('totalQuantity').textContent;
         const taxableValue = document.getElementById('taxableValue').textContent;
         const cgstValue = document.getElementById('cgstValue').textContent;
@@ -1070,7 +1084,9 @@ function saveInvoiceToFirestore() {
 
         const items = [];
         const itemRowsData = document.querySelectorAll('#itemRows tr');
+
         itemRowsData.forEach(row => {
+
             const descriptionSelect = row.querySelector('.description');
             const descriptionText = descriptionSelect.options[descriptionSelect.selectedIndex].text;
 
@@ -1090,19 +1106,22 @@ function saveInvoiceToFirestore() {
             });
         });
 
-        // Check if invoice number already exists
+        // CHECK DUPLICATE
         db.collection('invoices_2627').doc(invoiceNumber).get().then((doc) => {
+
             if (doc.exists) {
                 alert('Invoice number already exists. Please use a different number.');
                 reject('Invoice number exists');
             } else {
-                // Invoice number is unique, save to Firestore
+
+                // SAVE
                 db.collection('invoices_2627').doc(invoiceNumber).set({
                     invoiceNumber: invoiceNumber,
                     invoiceDate: invoiceDate,
                     buyerName: buyerName,
                     buyerGST: buyerGST,
                     termsOfPayment: termsOfPayment,
+                    type: saleType, // ✅ SAVED HERE
                     items: items,
                     totalQuantity: totalQuantity,
                     taxableValue: taxableValue,
@@ -1112,17 +1131,21 @@ function saveInvoiceToFirestore() {
                     invoiceValue: invoiceValue,
                     amountInWords: amountInWords,
                 }).then(() => {
+
                     alert('Invoice saved to Firestore!');
-                    resolve(); // Resolve the promise
+                    resolve();
+
                 }).catch(error => {
                     console.error('Error saving invoice:', error);
-                    reject(error); // Reject the promise
+                    reject(error);
                 });
             }
+
         }).catch(error => {
             console.error('Error checking invoice number:', error);
             reject(error);
         });
+
     });
 }
     
