@@ -96,14 +96,17 @@ document.getElementById('igst').addEventListener('input', () => {
         document.getElementById('cgst').value = '';
         document.getElementById('sgst').value = '';
     }
+    calculateTotal();
 });
 
 document.getElementById('cgst').addEventListener('input', () => {
     document.getElementById('igst').value = '';
+    calculateTotal();
 });
 
 document.getElementById('sgst').addEventListener('input', () => {
     document.getElementById('igst').value = '';
+    calculateTotal();
 });
 
 
@@ -138,29 +141,35 @@ function savePurchase() {
         return;
     }
 
-    rows.forEach((row, index) => {
-        let qty = parseFloat(row.querySelector('.qty').value);
-        let rate = parseFloat(row.querySelector('.rate').value);
-        let value = parseFloat(row.querySelector('.value').value);
+    try {
 
-        if (!qty || !rate) {
-            alert("Invalid item values");
-            return;
-        }
+        rows.forEach((row, index) => {
+            let qty = parseFloat(row.querySelector('.qty').value);
+            let rate = parseFloat(row.querySelector('.rate').value);
+            let value = parseFloat(row.querySelector('.value').value);
 
-        items.push({
-            quantity: qty.toString(),
-            rate: rate.toString(),
-            amount: value.toFixed(2),
-            lotNo: (index + 1).toString(),
-            unit: "CTS",
-            description: "Cut and Polished Diamonds",
-            hsnCode: "71023910"
+            if (!qty || !rate) {
+                throw new Error("Invalid item values");
+            }
+
+            items.push({
+                quantity: qty.toString(),
+                rate: rate.toString(),
+                amount: value.toFixed(2),
+                lotNo: (index + 1).toString(),
+                unit: "CTS",
+                description: "Cut and Polished Diamonds",
+                hsnCode: "71023910"
+            });
+
+            totalQty += qty;
+            taxableValue += value;
         });
 
-        totalQty += qty;
-        taxableValue += value;
-    });
+    } catch (err) {
+        alert(err.message);
+        return;
+    }
 
     const cgst = document.getElementById('cgst').value || "0.00";
     const sgst = document.getElementById('sgst').value || "0.00";
@@ -178,15 +187,18 @@ function savePurchase() {
     // 🔥 TEMP (Cloudinary later)
     const fileURL = "";
 
+    // ✅ UNIQUE DOC ID (Vendor + Invoice)
+    const docId = vendorGST + "_" + invoiceNumber;
+
     // 🔒 DUPLICATE CHECK
-    db.collection('purchase_entries_2627').doc(invoiceNumber).get().then(doc => {
+    db.collection('purchase_entries_2627').doc(docId).get().then(doc => {
 
         if (doc.exists) {
-            alert("Invoice number already exists");
+            alert("This invoice already exists for this vendor");
             return;
         }
 
-        db.collection('purchase_entries_2627').doc(invoiceNumber).set({
+        db.collection('purchase_entries_2627').doc(docId).set({
             vendorName,
             vendorGST,
             invoiceDate,
@@ -200,7 +212,7 @@ function savePurchase() {
             igstValue: igst,
             invoiceValue: totalValue.toFixed(2),
             invoiceFileURL: fileURL,
-            amountInWords: "", // later
+            amountInWords: "",
             createdAt: new Date()
         })
         .then(() => {
