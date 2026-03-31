@@ -20,6 +20,12 @@
             <span>HK-</span>
             <input type="text" id="invoiceNumber" name="invoiceNumber" style="width: 50px;" required>
             <span>/26-27</span>
+            <label for="saleType">Sale Type:</label>
+            <select id="saleType">
+                <option value="">Select</option>
+                <option value="Regular">Regular</option>
+                <option value="Lot">Lot</option>
+            </select>
         </div>
 
         <button id="invoiceManagerButton">Manage Invoices</button>
@@ -135,6 +141,7 @@ document.getElementById('invoiceManagerButton').addEventListener('click', functi
 
         <p><strong>Invoice Number:</strong> <span id="previewInvoiceNumber"></span></p>
         <p><strong>Invoice Date:</strong> <span id="previewInvoiceDate"></span></p>
+        <p><strong>Sale Type:</strong> <span id="previewSaleType"></span></p>
 
         <div id="sellerPreview">
             <h3>Seller Details</h3>

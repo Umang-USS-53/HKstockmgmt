@@ -621,6 +621,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const invoiceNumberInput = document.getElementById('invoiceNumber').value;
     document.getElementById('previewInvoiceNumber').textContent = `HK-${invoiceNumberInput}/26-27`;
 
+    const saleTypeElement = document.getElementById('previewSaleType');
+    if (saleTypeElement) {
+        saleTypeElement.textContent = document.getElementById('saleType').value;
+    }
+
 
     // Format Invoice Date
 
@@ -1067,6 +1072,7 @@ function saveInvoiceToFirestore() {
         const igstValue = document.getElementById('igstValue').textContent;
         const invoiceValue = document.getElementById('invoiceValue').textContent;
         const amountInWords = document.getElementById('amountInWords').textContent;
+        const saleType = document.getElementById('saleType').value;
 
         const items = [];
         const itemRowsData = document.querySelectorAll('#itemRows tr');
@@ -1103,6 +1109,7 @@ function saveInvoiceToFirestore() {
                     buyerName: buyerName,
                     buyerGST: buyerGST,
                     termsOfPayment: termsOfPayment,
+                    type: saleType,
                     items: items,
                     totalQuantity: totalQuantity,
                     taxableValue: taxableValue,
