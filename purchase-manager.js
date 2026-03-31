@@ -1,7 +1,35 @@
-// 🔥 FIREBASE INIT
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+// Initialize Firebase
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyDCk3zgMLzuXZM79F5QhbG9spZ5p_Tq7Gg",
+
+    authDomain: "hk-invoice-new.firebaseapp.com",
+
+    projectId: "hk-invoice-new",
+
+    storageBucket: "hk-invoice-new.firebasestorage.app",
+
+    messagingSenderId: "433334964621",
+
+    appId: "1:433334964621:web:d4c679cf4a3193457a6dc4"
+
+};
+
+
+let firebaseInitialized = false; // Add this line
+
+
+firebase.initializeApp(firebaseConfig);
+
+if (!firebaseInitialized) { // Add this check
+
+    console.log("Firebase initialized");
+
+    firebaseInitialized = true;
+
 }
+
 const db = firebase.firestore();
 
 
