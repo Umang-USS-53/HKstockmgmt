@@ -136,6 +136,7 @@ function displayDetailedInvoice(invoice) {
         <p><strong>Invoice Number:</strong> ${invoice.invoiceNumber}</p>
         <p><strong>Invoice Date:</strong> ${formattedDate}</p>
         <p><strong>Buyer Name:</strong> ${invoice.buyerName}</p>
+        <p><strong>Sale Type:</strong> ${invoice.type || ''}</p>
         <p><strong>Buyer GST:</strong> ${invoice.buyerGST}</p>
         <p><strong>Terms of Payment:</strong> ${invoice.termsOfPayment}</p>
         <h3>Items:</h3>
