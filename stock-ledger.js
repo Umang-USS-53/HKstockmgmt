@@ -1,35 +1,15 @@
-/ Initialize Firebase
+// Initialize Firebase
 
 const firebaseConfig = {
-
     apiKey: "AIzaSyDCk3zgMLzuXZM79F5QhbG9spZ5p_Tq7Gg",
-
     authDomain: "hk-invoice-new.firebaseapp.com",
-
     projectId: "hk-invoice-new",
-
     storageBucket: "hk-invoice-new.firebasestorage.app",
-
     messagingSenderId: "433334964621",
-
     appId: "1:433334964621:web:d4c679cf4a3193457a6dc4"
-
 };
 
-
-let firebaseInitialized = false; // Add this line
-
-
 firebase.initializeApp(firebaseConfig);
-
-if (!firebaseInitialized) { // Add this check
-
-    console.log("Firebase initialized");
-
-    firebaseInitialized = true;
-
-}
-
 const db = firebase.firestore();
 
 
@@ -104,6 +84,8 @@ async function generateLedger() {
 
     transactions.forEach(tx => {
 
+        if (!tx.items || !Array.isArray(tx.items)) return;
+
         tx.items.forEach(item => {
 
             if (item.description !== "Cut and Polished Diamonds") return;
@@ -111,11 +93,12 @@ async function generateLedger() {
             const qty = parseFloat(item.quantity);
             const rate = parseFloat(item.rate);
 
-            // ===== REGULAR =====
+            // ===== PURCHASE =====
 
-            if (tx.mode === "regular") {
+            if (tx.type === "purchase") {
 
-                if (tx.type === "purchase") {
+                // REGULAR PURCHASE
+                if (tx.mode === "regular") {
 
                     regularQty += qty;
                     regularValue += qty * rate;
@@ -133,7 +116,29 @@ async function generateLedger() {
                     });
                 }
 
-                if (tx.type === "sale") {
+                // LOT PURCHASE
+                if (tx.mode === "lot") {
+
+                    lotQueue.push({ qty, rate });
+
+                    lotLedger.push({
+                        date: tx.date,
+                        type: "Purchase",
+                        invoice: tx.invoice,
+                        qtyIn: qty,
+                        qtyOut: 0,
+                        rate: rate,
+                        lots: JSON.parse(JSON.stringify(lotQueue))
+                    });
+                }
+            }
+
+            // ===== SALE =====
+
+            if (tx.type === "sale") {
+
+                // REGULAR SALE
+                if (tx.mode === "regular") {
 
                     const avg = regularQty ? (regularValue / regularQty) : 0;
 
@@ -152,28 +157,9 @@ async function generateLedger() {
                         balanceValue: regularValue
                     });
                 }
-            }
 
-            // ===== LOT =====
-
-            if (tx.mode === "lot") {
-
-                if (tx.type === "purchase") {
-
-                    lotQueue.push({ qty, rate });
-
-                    lotLedger.push({
-                        date: tx.date,
-                        type: "Purchase",
-                        invoice: tx.invoice,
-                        qtyIn: qty,
-                        qtyOut: 0,
-                        rate: rate,
-                        lots: JSON.parse(JSON.stringify(lotQueue))
-                    });
-                }
-
-                if (tx.type === "sale") {
+                // LOT SALE (FIFO)
+                if (tx.mode === "lot") {
 
                     let remaining = qty;
                     let issuedLots = [];
