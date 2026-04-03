@@ -44,6 +44,33 @@ async function generateLedger() {
         }
     }
 
+    // ===== ADD OPENING ENTRY =====
+
+    if (regularQty > 0) {
+        regularLedger.push({
+            date: "Opening",
+            type: "Opening",
+            invoice: "-",
+            qtyIn: regularQty,
+            qtyOut: 0,
+            rate: regularQty ? (regularValue / regularQty) : 0,
+            value: regularValue,
+            balanceQty: regularQty,
+            balanceValue: regularValue
+        });
+    }
+
+    if (lotQueue.length > 0) {
+        lotLedger.push({
+            date: "Opening",
+            type: "Opening",
+            invoice: "-",
+            qtyIn: "",
+            qtyOut: "",
+            lots: JSON.parse(JSON.stringify(lotQueue))
+        });
+    }
+
     // ===== FETCH DATA =====
 
     let transactions = [];
@@ -97,7 +124,6 @@ async function generateLedger() {
 
             if (tx.type === "purchase") {
 
-                // REGULAR PURCHASE
                 if (tx.mode === "regular") {
 
                     regularQty += qty;
@@ -116,7 +142,6 @@ async function generateLedger() {
                     });
                 }
 
-                // LOT PURCHASE
                 if (tx.mode === "lot") {
 
                     lotQueue.push({ qty, rate });
@@ -137,7 +162,6 @@ async function generateLedger() {
 
             if (tx.type === "sale") {
 
-                // REGULAR SALE
                 if (tx.mode === "regular") {
 
                     const avg = regularQty ? (regularValue / regularQty) : 0;
@@ -158,7 +182,6 @@ async function generateLedger() {
                     });
                 }
 
-                // LOT SALE (FIFO)
                 if (tx.mode === "lot") {
 
                     let remaining = qty;
@@ -225,6 +248,9 @@ async function generateLedger() {
         row.insertCell(6).textContent = r.value?.toFixed(2) || "";
         row.insertCell(7).textContent = r.balanceQty?.toFixed(2) || "";
         row.insertCell(8).textContent = r.balanceValue?.toFixed(2) || "";
+
+        const closingRate = r.balanceQty ? (r.balanceValue / r.balanceQty) : 0;
+        row.insertCell(9).textContent = closingRate.toFixed(2);
     });
 
 
