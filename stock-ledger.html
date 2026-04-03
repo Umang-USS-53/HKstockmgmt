@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Ledger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Stock Ledger</h2>
+
+<button onclick="generateLedger()">Generate Ledger</button>
+
+<h3>Regular Ledger</h3>
+<table id="regularTable">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Invoice</th>
+            <th>Qty In</th>
+            <th>Qty Out</th>
+            <th>Rate</th>
+            <th>Value</th>
+            <th>Balance Qty</th>
+            <th>Balance Value</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<h3>Lot Ledger</h3>
+<table id="lotTable">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Invoice</th>
+            <th>Qty In</th>
+            <th>Qty Out</th>
+            <th>Details</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<script src="stock-ledger.js"></script>
+
+</body>
+</html>
